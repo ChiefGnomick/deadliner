@@ -9,6 +9,7 @@ import com.resource.deadliner.model.Week;
 
 @Repository
 public interface WeekRepository extends JpaRepository<Week, Long> {
-    Optional<Week> findByWeekNumberAndGroup_Name(int weekNumber, String groupName);
+    Optional<Week> findByWeekNumberAndGroup_GroupNumber(int weekNumber, String groupNumber);
     Optional<Week> findByWeekNumber(int weekNumber);
 }
+

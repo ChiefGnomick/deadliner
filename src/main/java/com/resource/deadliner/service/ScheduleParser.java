@@ -75,28 +75,29 @@ public class ScheduleParser {
     private static String getUrl(String groupName) {
         try {
             HttpClient client = HttpClient.newHttpClient();
+
             HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create("https://ssau.ru/rasp/search"))
-                    .POST(BodyPublishers.ofString("text=" + groupName))
-                    .setHeader("accept", "application/json")
-                    .setHeader("accept-language", "ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7")
-                    .setHeader("content-type", "application/x-www-form-urlencoded; charset=UTF-8")
-                    .setHeader("dnt", "1")
-                    .setHeader("origin", "https://ssau.ru")
-                    .setHeader("priority", "u=1, i")
-                    .setHeader("referer", "https://ssau.ru/rasp?groupId=799359533")
-                    .setHeader("sec-ch-ua", "\"Not(A:Brand\";v=\"99\", \"Google Chrome\";v=\"133\", \"Chromium\";v=\"133\"")
-                    .setHeader("sec-ch-ua-mobile", "?0")
-                    .setHeader("sec-ch-ua-platform", "\"Linux\"")
-                    .setHeader("sec-fetch-dest", "empty")
-                    .setHeader("sec-fetch-mode", "cors")
-                    .setHeader("sec-fetch-site", "same-origin")
-                    .setHeader("sec-gpc", "1")
-                    .setHeader("user-agent", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36")
-                    .setHeader("x-csrf-token", "cD2x9MpmB5py8119iUVmy8LfmZGSTPv8OLmnU1Qt")
-                    .setHeader("x-requested-with", "XMLHttpRequest")
-                    .setHeader("cookie", "hpvbg=0; laravel_session=l45K3G7ZXndas5eNT8cU7MGS6cTzL5OfbEHOLMys; XSRF-TOKEN=eyJpdiI6Ik1HNEJWWWsrMjYzV2JZNmpcL3lVbGtnPT0iLCJ2YWx1ZSI6IldTUWlIa1wvUkF6djBOaWE5ZU5rejc3OFBxb1hhVDlRWlp0VDhDZ3YwTTN3TEpoNUd4eGJROWxvbHhnNjFNXC9wdyIsIm1hYyI6IjNjY2QwZjc3NjU0NTEzMDI1NjQ1MmQxM2JiNDFlMDY1YmZlZTI4OGIzZmFjN2QxNDc4YWE4ZTAyNWYyODc0NTMifQ%3D%3D")
-                    .build();
+                .uri(URI.create("https://ssau.ru/rasp/search"))
+                .POST(BodyPublishers.ofString("text=6204-090301D"))
+                .setHeader("accept", "application/json")
+                .setHeader("accept-language", "ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7")
+                .setHeader("content-type", "application/x-www-form-urlencoded; charset=UTF-8")
+                .setHeader("dnt", "1")
+                .setHeader("origin", "https://ssau.ru")
+                .setHeader("priority", "u=1, i")
+                .setHeader("referer", "https://ssau.ru/rasp")
+                .setHeader("sec-ch-ua", "\"Not(A:Brand\";v=\"99\", \"Google Chrome\";v=\"133\", \"Chromium\";v=\"133\"")
+                .setHeader("sec-ch-ua-mobile", "?0")
+                .setHeader("sec-ch-ua-platform", "\"Linux\"")
+                .setHeader("sec-fetch-dest", "empty")
+                .setHeader("sec-fetch-mode", "cors")
+                .setHeader("sec-fetch-site", "same-origin")
+                .setHeader("sec-gpc", "1")
+                .setHeader("user-agent", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36")
+                .setHeader("x-csrf-token", "StJRG1UbgB5Psr5Ht12LEI6QAZxqdZ6ZjE7g86KW")
+                .setHeader("x-requested-with", "XMLHttpRequest")
+                .setHeader("cookie", "hpvbg=0; laravel_session=fuWwG7hfBfMCEIhdWEbVXxwD6YI1Z8b2oinCkHrz; XSRF-TOKEN=eyJpdiI6IjlRRTk4dTBERm5aaGhJN0ViN2hKbVE9PSIsInZhbHVlIjoiWWdBWW5ud1FORjNVc2FsS1ZnVGduN25wVCs5Y3JZZTNJazBoZG0raHQ4VUxWMlp4WW04dUZ2cXVKcTNqYTBuXC8iLCJtYWMiOiIyZGM3YzUyNmFlZmRhYTJhODkzOGUzMzkyYjk0ZDYxMGYyNDI0MWNkZGJkZjI3MzUwMjg1MzI5YzUyOWE2NTk2In0%3D")
+                .build();
 
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
             String responseBody = response.body();

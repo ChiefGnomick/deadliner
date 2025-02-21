@@ -44,18 +44,18 @@ public class TaskService {
         Task task = new Task();
         User currentUser = userRepository.findByTgId(request.getAuthor()).get();
         String groupName = currentUser.getGroup().getGroupNumber();
-        task.setAuthor(currentUser);
+        task.setUser(currentUser);
         task.setDate(LocalDate.parse(request.getDate(), DateTimeFormatter.ofPattern("yy.MM.dd")));
         task.setDescription(request.getDescription());
         task.setGroup(currentUser.getGroup());
         task.setSubject(request.getSubject());
-        Optional<Week> existingWeek = weekRepository.findByWeekNumberAndGroup_Name(request.getWeekNumber(), groupName);
+        Optional<Week> existingWeek = weekRepository.findByWeekNumberAndGroup_GroupNumber(request.getWeekNumber(), groupName);
         Week week;
 
         if (existingWeek.isEmpty()) {
             week = ScheduleParser.ParseWeek(request.getAuthor(), String.valueOf(request.getWeekNumber()));
             if (week != null) {
-                Group group = groupRepository.findByName(groupName).orElseThrow(() -> new RuntimeException("Group not found: " + groupName));
+                Group group = groupRepository.findByGroupNumber(groupName).get();
                 week.setGroup(group);
                 weekRepository.save(week);
             } else {
