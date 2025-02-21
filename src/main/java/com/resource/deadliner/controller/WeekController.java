@@ -29,7 +29,6 @@ public class WeekController {
         String tgId = request.get("tg_id");
         int weekNumber = Integer.parseInt(request.get("week_number"));
         Optional<Week> week = weekService.getWeekByTgIdAndNumber(tgId, weekNumber);
-        return week.map(ResponseEntity::ok)
-                   .orElseGet(() -> ResponseEntity.notFound().build());
+        return week.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 }

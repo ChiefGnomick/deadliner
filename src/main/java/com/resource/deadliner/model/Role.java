@@ -1,8 +1,8 @@
 package com.resource.deadliner.model;
 
 public enum Role {
-    SUPER_ADMIN,
-    ADMIN,
+    USER,
     MODERATOR,
-    USER
+    ADMIN,
+    SUPER_ADMIN;
 }

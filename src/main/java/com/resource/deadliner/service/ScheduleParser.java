@@ -23,14 +23,12 @@ import com.resource.deadliner.model.Week;
 
 public class ScheduleParser {
 
-    public static Week ParseWeek() {
+    public static Week ParseWeek(String groupName, String weekNumber) {
         try {
             Week week = new Week();
             
-            Document document = Jsoup.connect(getUrl("6204-090301D")).get();
-            Elements weekNumber = document.select(".week-nav-current_week");
-            int currentWeekNumber = parseWeekNumber(weekNumber.text());
-            week.setWeekNumber(currentWeekNumber);
+            Document document = Jsoup.connect(getUrl("groupName" + "&selectedWeek=" + weekNumber)).get();
+            week.setWeekNumber(Integer.parseInt(weekNumber));
 
             Elements dateElements = document.select(".schedule__head-date");
             ArrayList<String> dateList = new ArrayList<String>();
