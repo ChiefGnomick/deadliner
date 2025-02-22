@@ -18,8 +18,10 @@ public enum LessonType {
         for (LessonType lesson : values()) {
             if (lesson.displayName.equalsIgnoreCase(displayName)) {
                 return lesson;
+            } else if (displayName == "" || displayName == null) {
+                return null;
             }
         }
-        throw new IllegalArgumentException("Неизвестный предмет: " + displayName);
+        throw new IllegalArgumentException();
     }
 }

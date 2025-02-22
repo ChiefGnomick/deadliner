@@ -3,10 +3,12 @@ package com.resource.deadliner.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.resource.deadliner.dto.ChangeGroupRequest;
 import com.resource.deadliner.service.GroupService;;
 
 @RestController
@@ -20,9 +22,9 @@ public class GroupController {
         this.groupService = groupService;
     }
 
-    @PostMapping("/change-group")
-    public ResponseEntity<String> changeUserGroup(@RequestParam Long userId, @RequestParam Long groupId) {
-        boolean success = groupService.changeUserGroup(userId, groupId);
+    @PutMapping("/change-group")
+    public ResponseEntity<String> changeUserGroup(@RequestBody ChangeGroupRequest request) {
+        boolean success = groupService.changeUserGroup(request.getTgId(), request.getNewGroupId());
         if (success) {
             return ResponseEntity.ok("Группа успешно изменена, роль установлена в 'user'");
         } else {

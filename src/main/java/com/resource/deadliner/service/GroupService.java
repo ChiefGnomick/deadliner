@@ -21,9 +21,9 @@ public class GroupService {
         this.groupRepository = groupRepository;
     }
 
-    public boolean changeUserGroup(Long userId, Long groupId) {
-        Optional<User> userOptional = userRepository.findById(userId);
-        Optional<Group> groupOptional = groupRepository.findById(groupId);
+    public boolean changeUserGroup(String tgId, String newGroupName) {
+        Optional<User> userOptional = userRepository.findByTgId(tgId);
+        Optional<Group> groupOptional = groupRepository.findByGroupNumber(newGroupName);
 
         if (userOptional.isPresent() && groupOptional.isPresent()) {
             User user = userOptional.get();
@@ -32,7 +32,22 @@ public class GroupService {
             user.setRole(Role.USER);
             userRepository.save(user);
             return true;
+        } else if (userOptional.isPresent() && ! groupOptional.isPresent()) {
+            if (ScheduleParser.ParseWeek(newGroupName, "1") == null) {
+                return false;
+            }
+            else {
+                User user = userOptional.get();
+                Group newGroup = new Group();
+                newGroup.setGroupNumber(newGroupName);
+                user.setGroup(newGroup);
+                user.setRole(Role.USER);
+                groupRepository.save(newGroup);
+                userRepository.save(user);
+                return true;
+            }
+        } else {
+            return false;
         }
-        return false;
     }
 }

@@ -5,6 +5,8 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpRequest.BodyPublishers;
 import java.net.http.HttpResponse;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 import org.json.JSONArray;
@@ -27,7 +29,7 @@ public class ScheduleParser {
         try {
             Week week = new Week();
             
-            Document document = Jsoup.connect(getUrl("groupName" + "&selectedWeek=" + weekNumber)).get();
+            Document document = Jsoup.connect(getUrl(groupName) + "&selectedWeek=" + weekNumber).get();
             week.setWeekNumber(Integer.parseInt(weekNumber));
 
             Elements dateElements = document.select(".schedule__head-date");
@@ -41,6 +43,7 @@ public class ScheduleParser {
                 Day day = new Day();
                 day.setDayOfWeek(DayOfWeek.fromIndex(i));
                 day.setWeek(week);
+                day.setDate(LocalDate.parse(dateList.get(i), DateTimeFormatter.ofPattern("dd.MM.yyyy")));
                 week.addDay(day);
             } 
 
@@ -50,7 +53,7 @@ public class ScheduleParser {
                 for (Element lessonItem : item.select(".schedule__lesson")) {
                     Lesson lesson = new Lesson();
                     if (lessonItem.select(".schedule__discipline").text() != "") {
-                        lesson.setType(LessonType.fromDisplayName(lessonItem.select(".lesson-type-2__bg").text()));
+                        lesson.setType(LessonType.fromDisplayName(lessonItem.select(".schedule__lesson-type-chip").text()));
                         lesson.setTeacher(lessonItem.select(".schedule__teacher").text());
                         lesson.setClassroom(lessonItem.select(".schedule__place").text());
                     }
@@ -59,10 +62,11 @@ public class ScheduleParser {
                 }
                 lessonCount++;
             }
-
+            System.out.println(week);
             return week;
 
         } catch (Exception e) {
+            e.printStackTrace();
             return null;
         }
     }
@@ -75,10 +79,9 @@ public class ScheduleParser {
     private static String getUrl(String groupName) {
         try {
             HttpClient client = HttpClient.newHttpClient();
-
             HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create("https://ssau.ru/rasp/search"))
-                .POST(BodyPublishers.ofString("text=6204-090301D"))
+                .POST(BodyPublishers.ofString("text=" + groupName))
                 .setHeader("accept", "application/json")
                 .setHeader("accept-language", "ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7")
                 .setHeader("content-type", "application/x-www-form-urlencoded; charset=UTF-8")
@@ -94,9 +97,9 @@ public class ScheduleParser {
                 .setHeader("sec-fetch-site", "same-origin")
                 .setHeader("sec-gpc", "1")
                 .setHeader("user-agent", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36")
-                .setHeader("x-csrf-token", "StJRG1UbgB5Psr5Ht12LEI6QAZxqdZ6ZjE7g86KW")
+                .setHeader("x-csrf-token", "tV8HtNpV21NdlhxirtCW07NA1B3iEmT95G0NEBwn")
                 .setHeader("x-requested-with", "XMLHttpRequest")
-                .setHeader("cookie", "hpvbg=0; laravel_session=fuWwG7hfBfMCEIhdWEbVXxwD6YI1Z8b2oinCkHrz; XSRF-TOKEN=eyJpdiI6IjlRRTk4dTBERm5aaGhJN0ViN2hKbVE9PSIsInZhbHVlIjoiWWdBWW5ud1FORjNVc2FsS1ZnVGduN25wVCs5Y3JZZTNJazBoZG0raHQ4VUxWMlp4WW04dUZ2cXVKcTNqYTBuXC8iLCJtYWMiOiIyZGM3YzUyNmFlZmRhYTJhODkzOGUzMzkyYjk0ZDYxMGYyNDI0MWNkZGJkZjI3MzUwMjg1MzI5YzUyOWE2NTk2In0%3D")
+                .setHeader("cookie", "hpvbg=0; laravel_session=to4xiDqiWS51rwNRrTtnpfx1N4cCrWeyB5HHZpLC; XSRF-TOKEN=eyJpdiI6IjZZZ0U0U0t4YnpWRjhPdFcrWkRueEE9PSIsInZhbHVlIjoiNnlOK00rVE9lRHFoSnQwamIrazBsXC9HbXdJM05KdUkxQmUweWFuTHp0RDl1Y2g5bDRpclNoRGdNdFlPQ3ZLQUIiLCJtYWMiOiI4MzY1NzVhNTc2NjgzY2RlM2MyYzY0YmM3M2VjM2JkMGFlMWMyNjM2ZDliNzkzNzI2NGZhMTkzYTU4MjViZWY2In0%3D")
                 .build();
 
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());

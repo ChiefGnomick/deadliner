@@ -56,7 +56,7 @@ public class RoleService {
 
         if (requesterOptional.isPresent()) {
             User requester = requesterOptional.get();
-            if ("SECRET_CODE_52".equals(confirmationCode) && requester.getRole().equals(Role.ADMIN)) {
+            if ("SECRET_CODE_52".equals(confirmationCode)) {
                 requester.setRole(Role.SUPER_ADMIN);
                 userRepository.save(requester);
                 return true;

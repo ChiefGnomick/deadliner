@@ -45,7 +45,7 @@ public class TaskService {
         User currentUser = userRepository.findByTgId(request.getAuthor()).get();
         String groupName = currentUser.getGroup().getGroupNumber();
         task.setUser(currentUser);
-        task.setDate(LocalDate.parse(request.getDate(), DateTimeFormatter.ofPattern("yy.MM.dd")));
+        task.setDate(LocalDate.parse(request.getDate(), DateTimeFormatter.ofPattern("dd.MM.yyyy")));
         task.setDescription(request.getDescription());
         task.setGroup(currentUser.getGroup());
         task.setSubject(request.getSubject());
